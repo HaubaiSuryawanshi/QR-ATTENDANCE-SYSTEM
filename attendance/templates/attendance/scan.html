@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>QR Attendance Scanner</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script src="https://unpkg.com/html5-qrcode@2.3.7"></script>
+
+<style>
+
+body{
+font-family:Arial;
+text-align:center;
+background:#f4f6f8;
+margin:0;
+}
+
+.header{
+background:#11998e;
+color:white;
+padding:15px;
+font-size:22px;
+font-weight:bold;
+}
+
+#reader{
+margin:auto;
+margin-top:20px;
+width:350px;
+}
+
+/* SCAN FRAME */
+
+.scan-frame{
+border:4px dashed #11998e;
+border-radius:12px;
+padding:10px;
+display:inline-block;
+}
+
+.card{
+margin-top:20px;
+display:inline-block;
+padding:20px;
+border-radius:12px;
+box-shadow:0 6px 15px rgba(0,0,0,0.2);
+background:white;
+width:320px;
+animation:fadeIn 0.4s ease;
+}
+
+.card img{
+width:120px;
+height:120px;
+border-radius:50%;
+object-fit:cover;
+margin-bottom:10px;
+border:3px solid #11998e;
+}
+
+.status{
+font-size:20px;
+font-weight:bold;
+margin-top:10px;
+color:#11998e;
+}
+
+.footer{
+margin-top:40px;
+background:#11998e;
+color:white;
+padding:10px;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:scale(0.9);}
+to{opacity:1;transform:scale(1);}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+QR Attendance Scanner
+</div>
+
+<h2>Scan Student QR Code</h2>
+
+<div class="scan-frame">
+<div id="reader"></div>
+</div>
+
+<div id="result"></div>
+
+<script>
+
+let lastScan = "";
+
+/* BEEP SOUND */
+
+function playBeep(){
+
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+const oscillator = audioContext.createOscillator();
+const gainNode = audioContext.createGain();
+
+oscillator.type = "square";
+oscillator.frequency.value = 1200;
+
+gainNode.gain.value = 1;
+
+oscillator.connect(gainNode);
+gainNode.connect(audioContext.destination);
+
+oscillator.start();
+
+setTimeout(function(){
+oscillator.stop();
+},200);
+
+}
+
+
+function onScanSuccess(decodedText){
+
+if(decodedText === lastScan){
+return;
+}
+
+lastScan = decodedText;
+
+fetch('/mark-attendance/',{
+
+method:'POST',
+
+headers:{
+'Content-Type':'application/json'
+},
+
+body:JSON.stringify({
+qr_data:decodedText
+})
+
+})
+
+.then(response=>response.json())
+
+.then(data=>{
+
+playBeep();
+
+document.getElementById("result").innerHTML = `
+
+<div class="card">
+
+<img src="${data.photo}" onerror="this.src='/static/default.png'">
+
+<div class="status">${data.status}</div>
+
+<p><b>Name:</b> ${data.name}</p>
+<p><b>Roll:</b> ${data.roll}</p>
+<p><b>Class:</b> ${data.class}</p>
+<p><b>Department:</b> ${data.dept}</p>
+
+<hr>
+
+<p><b>Present:</b> ${data.present}</p>
+<p><b>Absent:</b> ${data.absent}</p>
+
+</div>
+
+`;
+
+})
+
+.catch(error=>{
+
+document.getElementById("result").innerHTML =
+"<p style='color:red;'>Error marking attendance</p>";
+
+});
+
+}
+
+function onScanError(error){}
+
+
+/* FAST CAMERA START */
+
+Html5Qrcode.getCameras().then(devices => {
+
+if(devices && devices.length){
+
+let cameraId = devices[devices.length-1].id; // back camera
+
+let scanner = new Html5Qrcode("reader");
+
+scanner.start(
+cameraId,
+{
+fps:25,
+qrbox:{width:220,height:220}
+},
+onScanSuccess
+);
+
+}
+
+});
+
+</script>
+
+<div class="footer">
+© 2026 College Attendance System
+</div>
+
+</body>
+
+</html>

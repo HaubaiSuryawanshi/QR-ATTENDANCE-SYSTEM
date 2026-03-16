@@ -1,0 +1,25 @@
+<h2>Attendance Report</h2>
+
+<p>Date : {{date}}</p>
+
+<table border="1" cellpadding="5">
+
+<tr>
+<th>Name</th>
+<th>Roll</th>
+<th>Class</th>
+<th>Status</th>
+</tr>
+
+{% for a in attendance %}
+
+<tr>
+<td>{{a.student.student_name}}</td>
+<td>{{a.student.roll_no}}</td>
+<td>{{a.student.student_class}}</td>
+<td>{{a.status}}</td>
+</tr>
+
+{% endfor %}
+
+</table>

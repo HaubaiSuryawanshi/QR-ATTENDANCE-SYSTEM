@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Student Profile</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6f8;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+margin-bottom:20px;
+}
+
+img{
+width:120px;
+height:120px;
+border-radius:50%;
+object-fit:cover;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+}
+
+th,td{
+padding:10px;
+border:1px solid #ddd;
+text-align:center;
+}
+
+th{
+background:#11998e;
+color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Student Profile</h2>
+
+<div class="card">
+
+{% if student.photo %}
+<img src="{{student.photo.url}}">
+{% endif %}
+
+<h3>{{student.student_name}}</h3>
+
+<p><b>Roll:</b> {{student.roll_no}}</p>
+<p><b>Class:</b> {{student.student_class}}</p>
+<p><b>Department:</b> {{student.department}}</p>
+
+<p><b>Total Classes:</b> {{total}}</p>
+<p><b>Present:</b> {{present}}</p>
+<p><b>Absent:</b> {{absent}}</p>
+
+</div>
+
+
+<h3>Attendance History</h3>
+
+<table>
+
+<tr>
+<th>Date</th>
+<th>Subject</th>
+<th>Status</th>
+</tr>
+
+{% for a in attendance %}
+
+<tr>
+<td>{{a.date}}</td>
+<td>{{a.subject}}</td>
+<td>{{a.status}}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+</html>

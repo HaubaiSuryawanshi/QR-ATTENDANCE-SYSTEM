@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Login</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:linear-gradient(135deg,#11998e,#38ef7d);
+min-height:100vh;
+display:flex;
+flex-direction:column;
+}
+
+/* HEADER */
+
+.header{
+background:#11998e;
+color:white;
+padding:15px;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+font-size:20px;
+font-weight:bold;
+}
+
+.header img{
+width:35px;
+height:35px;
+}
+
+/* LOGIN AREA */
+
+.container{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.login-box{
+background:white;
+padding:35px;
+width:320px;
+border-radius:12px;
+box-shadow:0 8px 20px rgba(0,0,0,0.2);
+text-align:center;
+}
+
+h2{
+margin-bottom:25px;
+color:#333;
+}
+
+input,select{
+width:100%;
+padding:12px;
+margin:8px 0;
+border-radius:6px;
+border:1px solid #ccc;
+font-size:14px;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#11998e;
+border:none;
+color:white;
+font-size:16px;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{
+background:#0f7f76;
+}
+
+a{
+text-decoration:none;
+color:#11998e;
+font-weight:bold;
+}
+
+/* FOOTER */
+
+.footer{
+background:#11998e;
+color:white;
+text-align:center;
+padding:12px;
+font-size:14px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+<img src="/static/logo.png">
+Vishwabharti Mahavidhyala Cidco 
+</div>
+
+<div class="container">
+
+<div class="login-box">
+
+<h2>Login</h2>
+
+<form method="post">
+{% csrf_token %}
+
+<input name="username" placeholder="Username" required>
+
+<input name="password" type="password" placeholder="Password" required>
+
+<select name="role">
+<option value="student">Student</option>
+<option value="admin">Admin</option>
+</select>
+
+<br><br>
+
+<button type="submit">Login</button>
+
+</form>
+
+<br>
+
+<a href="/register/">Student Register</a>
+
+</div>
+
+</div>
+
+<div class="footer">
+© 2026 QR Attendence System | Devloped By Haubai Suryawanshi
+</div>
+
+</body>
+</html>

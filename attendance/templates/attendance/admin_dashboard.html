@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Admin Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+font-family:'Segoe UI',sans-serif;
+background:#eef2f7;
+margin:0;
+}
+
+/* HEADER */
+
+.header{
+background:linear-gradient(45deg,#11998e,#38ef7d);
+color:white;
+padding:18px;
+font-size:22px;
+font-weight:bold;
+text-align:center;
+}
+
+/* CONTAINER */
+
+.container{
+padding:20px;
+}
+
+/* STATS CARDS */
+
+.stats{
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+margin-bottom:20px;
+}
+
+.stat-card{
+flex:1;
+min-width:200px;
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+text-align:center;
+}
+
+.stat-card h2{
+margin:0;
+color:#11998e;
+}
+
+.stat-card p{
+margin:5px 0 0;
+color:#555;
+}
+
+/* BUTTON */
+
+.btn{
+display:inline-block;
+margin-top:10px;
+padding:10px 18px;
+background:#11998e;
+color:white;
+text-decoration:none;
+border-radius:6px;
+font-weight:bold;
+}
+
+/* CHARTS */
+
+.charts{
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+margin-bottom:20px;
+}
+
+.chart-card{
+flex:1;
+min-width:300px;
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* TABLE */
+
+.table-card{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+th{
+background:#11998e;
+color:white;
+padding:12px;
+}
+
+td{
+padding:10px;
+border-bottom:1px solid #ddd;
+}
+
+tr:hover{
+background:#f2f2f2;
+}
+
+img{
+width:45px;
+height:45px;
+border-radius:50%;
+object-fit:cover;
+}
+
+.footer{
+margin-top:30px;
+background:#11998e;
+color:white;
+text-align:center;
+padding:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+College QR Attendance - Admin Dashboard
+</div>
+
+<div class="container">
+
+<!-- STATS -->
+
+<div class="stats">
+
+<div class="stat-card">
+<h2>{{total_students}}</h2>
+<p>Total Students</p>
+</div>
+
+<div class="stat-card">
+<h2>{{today_attendance}}</h2>
+<p>Today's Attendance</p>
+</div>
+
+<div class="stat-card">
+<h2>{{present}}</h2>
+<p>Present Today</p>
+</div>
+
+<div class="stat-card">
+<h2>{{absent}}</h2>
+<p>Absent Today</p>
+</div>
+
+<div class="stat-card">
+<a href="/scan/" class="btn">Open QR Scanner</a>
+<p>Mark Attendance</p>
+</div>
+
+</div>
+
+
+<!-- CHARTS -->
+
+<div class="charts">
+
+<div class="chart-card">
+
+<h3>Today's Attendance</h3>
+
+<canvas id="pieChart"></canvas>
+
+</div>
+
+
+<div class="chart-card">
+
+<h3>Daily Attendance</h3>
+
+<canvas id="barChart"></canvas>
+
+</div>
+
+</div>
+
+
+<!-- ATTENDANCE TABLE -->
+
+<div class="table-card">
+
+<h3>Attendance List</h3>
+
+<table>
+
+<tr>
+<th>Photo</th>
+<th>Name</th>
+<th>Roll</th>
+<th>Class</th>
+<th>Department</th>
+<th>Date</th>
+<th>Status</th>
+</tr>
+
+{% for a in attendance_list %}
+
+<tr>
+
+<td>
+{% if a.student.photo %}
+<img src="{{a.student.photo.url}}">
+{% else %}
+<img src="/static/no-photo.png">
+{% endif %}
+</td>
+
+<td>
+<a href="/student/{{a.student.id}}/">
+{{a.student.student_name}}
+</a>
+</td>
+<td>{{a.student.roll_no}}</td>
+<td>{{a.student.student_class}}</td>
+<td>{{a.student.department}}</td>
+<td>{{a.date}}</td>
+<td>{{a.status}}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+
+<script>
+
+// PIE CHART
+
+new Chart(document.getElementById('pieChart'),{
+
+type:'pie',
+
+data:{
+labels:['Present','Absent'],
+
+datasets:[{
+data:[{{present}},{{absent}}],
+backgroundColor:['#2ecc71','#e74c3c']
+}]
+}
+
+});
+
+
+// BAR CHART
+
+new Chart(document.getElementById('barChart'),{
+
+type:'bar',
+
+data:{
+labels: {{labels|safe}},
+
+datasets:[{
+label:'Daily Attendance',
+data: {{counts|safe}},
+backgroundColor:'#11998e'
+}]
+}
+
+});
+
+</script>
+
+<div class="footer">
+© 2026 College Attendance System
+</div>
+
+</body>
+</html>

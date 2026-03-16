@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Student Register</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:linear-gradient(135deg,#11998e,#38ef7d);
+min-height:100vh;
+display:flex;
+flex-direction:column;
+}
+
+/* NAVBAR */
+
+.navbar{
+background:#11998e;
+color:white;
+padding:15px;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+font-size:20px;
+font-weight:bold;
+}
+
+.navbar img{
+width:35px;
+height:35px;
+}
+
+/* FORM AREA */
+
+.container{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.form-box{
+background:white;
+padding:35px;
+width:320px;
+border-radius:12px;
+box-shadow:0 8px 20px rgba(0,0,0,0.2);
+text-align:center;
+}
+
+h2{
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:8px 0;
+border-radius:6px;
+border:1px solid #ccc;
+font-size:14px;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#11998e;
+border:none;
+color:white;
+font-size:16px;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{
+background:#0f7f76;
+}
+
+/* FOOTER */
+
+.footer{
+background:#11998e;
+color:white;
+text-align:center;
+padding:12px;
+font-size:14px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+<img src="/static/logo.png">
+Vishwabharti Mahavidhyala Cidco 
+</div>
+
+<div class="container">
+
+<div class="form-box">
+
+<h2>Student Register</h2>
+
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+
+<input name="username" placeholder="Username">
+
+<input name="password" type="password" placeholder="Password">
+
+<input name="student_name" placeholder="Student Name">
+
+<input name="roll" placeholder="Roll No">
+
+<input name="student_class" placeholder="Class">
+
+<input name="department" placeholder="Department">
+
+<input name="email" placeholder="Email">
+
+<input type="file" name="photo">
+
+<br>
+
+<button type="submit">Register</button>
+
+</form>
+
+</div>
+
+</div>
+
+<div class="footer">
+© 2026 QR Attendance System | Developed By Haubai Suryawanshi
+</div>
+
+</body>
+</html>
